@@ -46,8 +46,8 @@ public class SchedulerWorker : IHostedService
 
         foreach (var jobMetadata in _jobsMetadata)
         {
-            var jobDetail = CreateJob(jobMetadata);
-            var trigger = CreateTrigger(jobMetadata);
+            IJobDetail jobDetail = CreateJob(jobMetadata);
+            ITrigger trigger = CreateTrigger(jobMetadata);
 
             _scheduler.ScheduleJob(jobDetail, trigger, cancellationToken).GetAwaiter();
         }
@@ -59,11 +59,15 @@ public class SchedulerWorker : IHostedService
     {
         try
         {
-            return TriggerBuilder.Create()
-                .WithIdentity(jobMetadata.Id.ToString())
-                .WithCronSchedule(CronToQuartzHelper.GetQuartz(jobMetadata.CronExpression))
-                .WithDescription(jobMetadata.Name)
-                .Build();
+             if (!CronExpression.IsValidExpression(jobMetadata.CronExpression))
+             {
+                 jobMetadata.CronExpression = CronToQuartzHelper.GetQuartz(jobMetadata.CronExpression);
+             }
+             return TriggerBuilder.Create()
+                 .WithIdentity(jobMetadata.Id.ToString())
+                 .WithCronSchedule(jobMetadata.CronExpression)
+                 .WithDescription(jobMetadata.Name)
+                 .Build();
         }
         catch (FormatException)
         {
