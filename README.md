@@ -65,7 +65,11 @@ dotnet run "SingularisTestTask.csproj"
  - Откройте docker-compose.yml
  - Задайте порты для MongoDB в поле mongodb.ports
  - Задайте в app.volumes пути ваших папки-источника и папки-незначение
- - Задайте временную зону, в которой запускаете проект в поле app.environment.TZ 
+ - Задайте временную зону, в которой запускаете проект в поле app.environment.TZ
+ - Комманда для запуска
+```
+docker-compose up --build
+```
 
 ## Использованные технологии
 - MongoDB.Driver - драйвер для MongoDB
