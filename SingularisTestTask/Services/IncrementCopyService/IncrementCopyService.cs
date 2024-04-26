@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using SingularisTestTask.Infrastructure;
 using SingularisTestTask.Models;
 using SingularisTestTask.Services.Helpers;
