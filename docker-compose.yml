@@ -13,7 +13,9 @@ services:
     build: .
     container_name: my-csharp-app
     volumes:
+      # set right value of volume the same value as SOURCE_VOLUME
       - //c/tmp/source:/tmp/c_tmp_source
+      # set right value of volume the same value as DESTINATION_VOLUME
       - //c/tmp/destination:/tmp/c_tmp_destination
     environment:
       SOURCE_VOLUME: /tmp/c_tmp_source

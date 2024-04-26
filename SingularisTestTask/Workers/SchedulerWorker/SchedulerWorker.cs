@@ -30,6 +30,7 @@ public class SchedulerWorker : IHostedService
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         _jobsMetadata = JobMetadata.MergeCronData(_jobsMetadata, _schedulerJobsOptions.CurrentValue.JobCronModels);
+        // If _schedulerJobsOptions changes, reschedule jobs
         _schedulerJobsOptions.OnChange(async _ => await HandleOptionsChangeAsync(cancellationToken));
         await StartSchedulerAsync(cancellationToken);
     }
@@ -39,6 +40,10 @@ public class SchedulerWorker : IHostedService
         await _scheduler.Shutdown(true, cancellationToken);
     }
     
+    /// <summary>
+    /// Schedule jobs
+    /// </summary>
+    /// <param name="cancellationToken"></param>
     private async Task StartSchedulerAsync(CancellationToken cancellationToken)
     {
         _scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
@@ -46,8 +51,8 @@ public class SchedulerWorker : IHostedService
 
         foreach (var jobMetadata in _jobsMetadata)
         {
-            IJobDetail jobDetail = CreateJob(jobMetadata);
-            ITrigger trigger = CreateTrigger(jobMetadata);
+            var jobDetail = CreateJob(jobMetadata);
+            var trigger = CreateTrigger(jobMetadata);
 
             _scheduler.ScheduleJob(jobDetail, trigger, cancellationToken).GetAwaiter();
         }

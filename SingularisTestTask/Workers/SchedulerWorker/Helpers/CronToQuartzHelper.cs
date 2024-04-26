@@ -2,39 +2,17 @@
 
 public static class CronToQuartzHelper
 {
+    /// <summary>
+    /// Converts unix-like cron expression to Quartz-like
+    /// </summary>
+    /// <param name="crontab"></param>
+    /// <returns></returns>
     public static string GetQuartz(string crontab)
     {
         // Check for cron magic entries
         var data = ParseCronMagics(crontab) ?? ParseCronSyntax(crontab.Split(' '));
 
         return string.Join(" ", data);
-    }
-
-    private static string AdvanceNumber(string str)
-    {
-        var quartzCompatibleStr = "";
-        foreach (var chr in str)
-        {
-            if (int.TryParse(chr.ToString(), out int num))
-            {
-                // Char is an actual number
-                if (num is >= 0 and <= 7)
-                {
-                    quartzCompatibleStr += (num + 1).ToString();
-                }
-                else
-                {
-                    // Otherwise default to 1, beginning of the week
-                    quartzCompatibleStr = "1";
-                }
-            }
-            else
-            {
-                quartzCompatibleStr += chr;
-            }
-        }
-
-        return quartzCompatibleStr;
     }
 
     private static string[] ParseCronSyntax(string[] crontabEntry)
@@ -109,5 +87,32 @@ public static class CronToQuartzHelper
         }
 
         return quartzEntry;
+    }
+    
+    private static string AdvanceNumber(string str)
+    {
+        var quartzCompatibleStr = "";
+        foreach (var chr in str)
+        {
+            if (int.TryParse(chr.ToString(), out int num))
+            {
+                // Char is an actual number
+                if (num is >= 0 and <= 7)
+                {
+                    quartzCompatibleStr += (num + 1).ToString();
+                }
+                else
+                {
+                    // Otherwise default to 1, beginning of the week
+                    quartzCompatibleStr = "1";
+                }
+            }
+            else
+            {
+                quartzCompatibleStr += chr;
+            }
+        }
+
+        return quartzCompatibleStr;
     }
 }

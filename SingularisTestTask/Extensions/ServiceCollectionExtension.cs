@@ -5,6 +5,10 @@ namespace SingularisTestTask.Extensions;
 
 public static class ServiceCollectionExtension
 {
+    /// <summary>
+    /// Convert service options if app runs in docker to work with files with volumes
+    /// </summary>
+    /// <param name="services"></param>
     public static void ReconfigureOptionsIfInDocker(this IServiceCollection services)
     {
         if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER")))

@@ -15,6 +15,11 @@ public class IncrementCopyJob : IJob
         _incrementCopyService = incrementCopyService;
     }
         
+    /// <summary>
+    /// Executes IncrementCopyService.Run
+    /// </summary>
+    /// <param name="context"></param>
+    /// <returns></returns>
     public Task Execute(IJobExecutionContext context)
     {
         try

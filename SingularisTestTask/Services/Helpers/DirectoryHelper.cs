@@ -4,13 +4,23 @@ namespace SingularisTestTask.Services.Helpers;
 
 public static class DirectoryHelper
 {
-    public static IEnumerable<string> GetAllDirsRelative(string sourceFolder)
+    /// <summary>
+    /// Get relative path of all directories in directory
+    /// </summary>
+    /// <param name="directory"></param>
+    /// <returns></returns>
+    public static IEnumerable<string> GetAllDirsRelative(string directory)
     {
-        return Directory.GetDirectories(sourceFolder, "*", SearchOption.AllDirectories).Select(dir => dir.GetRelativePath(sourceFolder)).ToArray();
+        return Directory.GetDirectories(directory, "*", SearchOption.AllDirectories).Select(dir => dir.GetRelativePath(directory)).ToArray();
     }
     
-    public static IEnumerable<string> GetAllFilesRelative(string sourceFolder)
+    /// <summary>
+    /// Get relative path of all files in directory
+    /// </summary>
+    /// <param name="directory"></param>
+    /// <returns></returns>
+    public static IEnumerable<string> GetAllFilesRelative(string directory)
     {
-        return Directory.GetFiles(sourceFolder, "*", SearchOption.AllDirectories).Select(file => file.GetRelativePath(sourceFolder)).ToArray();
+        return Directory.GetFiles(directory, "*", SearchOption.AllDirectories).Select(file => file.GetRelativePath(directory)).ToArray();
     }
 }

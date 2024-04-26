@@ -11,11 +11,10 @@ public class JobFactory : IJobFactory
     {
         _service = serviceProvider;
     }
-        
+    
     public IJob NewJob(TriggerFiredBundle bundle, IScheduler scheduler)
     {
-        var jobDetail = bundle.JobDetail;
-        return (IJob)_service.GetService(jobDetail.JobType)!;
+        return (_service.GetService(bundle.JobDetail.JobType) as IJob)!;
     }
 
     public void ReturnJob(IJob job)
