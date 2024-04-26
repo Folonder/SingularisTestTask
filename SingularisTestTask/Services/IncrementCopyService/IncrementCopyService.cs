@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System.Runtime.InteropServices.JavaScript;
+using Microsoft.Extensions.Options;
 using SingularisTestTask.Infrastructure;
 using SingularisTestTask.Models;
 using SingularisTestTask.Services.Helpers;
@@ -43,16 +44,18 @@ public class IncrementCopyService : IIncrementCopyService
             SetDirsAndFiles(_baseFolder);
         }
 
-        MakeIncrement();
-        _logger.LogInformation($"Create increment folder at {startTime}");
+        MakeIncrement(startTime);
     }
 
-    private void MakeIncrement()
+    private void MakeIncrement(DateTime startTime)
     {
         var (dirDifference, fileDifference) = GetDifference();
-        CopyDirsAndFiles(dirDifference, fileDifference, _sourceFolder,
-            Path.Combine(_model.DestinationFolder, _startTime.ToString("inc_yyyy_MM_dd_HH_mm_ss")));
-        SetDirsAndFiles(_sourceFolder);
+        if (dirDifference.Any() || fileDifference.Any())
+        {
+            CopyDirsAndFiles(dirDifference, fileDifference, _sourceFolder,Path.Combine(_model.DestinationFolder, _startTime.ToString("inc_yyyy_MM_dd_HH_mm_ss")));
+            _logger.LogInformation($"Create increment folder at {startTime}");
+            SetDirsAndFiles(_sourceFolder);
+        }
     }
 
     private void SetDirsAndFiles(string folder)
