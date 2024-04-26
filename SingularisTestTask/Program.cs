@@ -25,6 +25,8 @@ class Program
             services.Configure<IncrementCopyServiceOptions>(context.Configuration.GetSection(IncrementCopyServiceOptions.Key));
             services.Configure<IncrementCopyRepositoryOptions>(context.Configuration.GetSection(IncrementCopyRepositoryOptions.Key));
             
+            services.ReconfigureOptionsIfInDocker();
+            
             services.AddSingleton<IJobFactory, JobFactory>();
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
             services.AddSingleton<IncrementCopyJob>();
