@@ -5,13 +5,13 @@ services:
     image: mongo
     container_name: my-mongo
     ports:
-      - "27000:27017"
+      - "27017:27017"
     volumes:
       - ./mongo-data:/data/db
 
   app:
     build: .
-    container_name: my-csharp-app
+    container_name: singularis-test-task
     volumes:
       # set right value of volume the same value as SOURCE_VOLUME
       - //c/tmp/source:/tmp/c_tmp_source
